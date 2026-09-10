@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="BenSpeed - Application Android pour mesurer et surveiller votre vitesse de connexion Internet.">
+
+    <meta name="theme-color" content="#050b18">
+
+    <title>BenSpeed — Testez votre connexion</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top, #10244a 0%, #050b18 45%, #02050b 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            width: 100%;
+            padding: 20px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #26a7ff;
+        }
+
+        .version {
+            padding: 8px 14px;
+            border: 1px solid rgba(38, 167, 255, 0.35);
+            border-radius: 30px;
+            color: #8ed4ff;
+            background: rgba(38, 167, 255, 0.08);
+            font-size: 13px;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 50px 20px 80px;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            width: 100%;
+        }
+
+        .app-icon {
+            width: 115px;
+            height: 115px;
+            margin: 0 auto 25px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(145deg, #1b8cff, #0750bd);
+
+            box-shadow:
+                0 0 30px rgba(38, 167, 255, 0.35),
+                0 20px 60px rgba(0, 0, 0, 0.45);
+
+            font-size: 55px;
+        }
+
+        h1 {
+            font-size: clamp(42px, 8vw, 78px);
+            line-height: 1;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+
+        h1 span {
+            color: #26a7ff;
+        }
+
+        .subtitle {
+            max-width: 650px;
+            margin: auto;
+            color: #b6c5d8;
+            font-size: 19px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           DOWNLOAD BUTTON
+        ========================= */
+
+        .download-container {
+            margin-top: 38px;
+        }
+
+        .download-button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+
+            padding: 18px 35px;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(135deg, #26a7ff, #0868d5);
+
+            color: white;
+            text-decoration: none;
+
+            font-size: 18px;
+            font-weight: 800;
+
+            box-shadow:
+                0 12px 35px rgba(38, 167, 255, 0.28);
+
+            transition: 0.25s ease;
+        }
+
+        .download-button:hover {
+            transform: translateY(-4px);
+            box-shadow:
+                0 18px 45px rgba(38, 167, 255, 0.4);
+        }
+
+        .download-button:active {
+            transform: scale(0.97);
+        }
+
+        .download-icon {
+            font-size: 25px;
+        }
+
+        .download-info {
+            margin-top: 13px;
+            color: #71839b;
+            font-size: 13px;
+        }
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .features-section {
+            max-width: 1100px;
+            margin: auto;
+            padding: 70px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            color: #8496ad;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .feature {
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 20px;
+            padding: 30px 25px;
+            transition: 0.25s;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            border-color: rgba(38,167,255,0.3);
+            background: rgba(38,167,255,0.06);
+        }
+
+        .feature-icon {
+            font-size: 35px;
+            margin-bottom: 18px;
+        }
+
+        .feature h3 {
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: #91a1b5;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* =========================
+           INFO
+        ========================= */
+
+        .info-section {
+            max-width: 800px;
+            margin: auto;
+            padding: 40px 20px 90px;
+        }
+
+        .info-card {
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 22px;
+            padding: 30px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #8092a8;
+        }
+
+        .info-value {
+            font-weight: 700;
+            text-align: right;
+        }
+
+        /* =========================
+           INSTALLATION
+        ========================= */
+
+        .install {
+            max-width: 800px;
+            margin: auto;
+            padding: 0 20px 90px;
+        }
+
+        .install-card {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(38,167,255,0.12),
+                    rgba(255,255,255,0.025)
+                );
+
+            border: 1px solid rgba(38,167,255,0.18);
+            border-radius: 22px;
+            padding: 35px;
+        }
+
+        .install-card h2 {
+            margin-bottom: 20px;
+        }
+
+        .install-card ol {
+            padding-left: 22px;
+        }
+
+        .install-card li {
+            color: #a9b8c9;
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            text-align: center;
+            padding: 35px 20px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            color: #68798e;
+            font-size: 13px;
+        }
+
+        footer strong {
+            color: #9db0c6;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 750px) {
+
+            header {
+                padding: 18px 20px;
+            }
+
+            .version {
+                font-size: 11px;
+            }
+
+            .hero {
+                min-height: auto;
+                padding-top: 55px;
+            }
+
+            .app-icon {
+                width: 95px;
+                height: 95px;
+                border-radius: 25px;
+                font-size: 45px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .download-button {
+                width: 100%;
+                max-width: 360px;
+                padding: 17px 20px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .info-value {
+                text-align: left;
+            }
+
+            .install-card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header>
+
+        <div class="logo">
+            Ben<span>Speed</span>
+        </div>
+
+        <div class="version">
+            Android APK
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <div class="app-icon">
+                    ⚡
+                </div>
+
+                <h1>
+                    Ben<span>Speed</span>
+                </h1>
+
+                <p class="subtitle">
+                    Mesurez et surveillez facilement la vitesse
+                    de votre connexion Internet directement depuis
+                    votre téléphone Android.
+                </p>
+
+                <div class="download-container">
+
+                    <!--
+                        IMPORTANT :
+                        benspeed.apk doit être dans le même dossier
+                        que index.html
+                    -->
+
+                    <a
+                        class="download-button"
+                        href="benspeed.apk"
+                        download="benspeed.apk"
+                    >
+
+                        <span class="download-icon">⬇</span>
+
+                        Télécharger BenSpeed
+
+                    </a>
+
+                    <div class="download-info">
+                        Fichier APK • Android
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FEATURES
+        ========================== -->
+
+        <section class="features-section">
+
+            <div class="section-title">
+
+                <h2>Pourquoi BenSpeed ?</h2>
+
+                <p>
+                    Une application simple pour surveiller votre connexion.
+                </p>
+
+            </div>
+
+
+            <div class="features">
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        🚀
+                    </div>
+
+                    <h3>
+                        Rapide
+                    </h3>
+
+                    <p>
+                        Consultez rapidement les informations
+                        concernant votre connexion Internet.
+                    </p>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Suivi
+                    </h3>
+
+                    <p>
+                        Surveillez l'évolution de votre connexion
+                        au fil du temps.
+                    </p>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        📱
+                    </div>
+
+                    <h3>
+                        Android
+                    </h3>
+
+                    <p>
+                        Une application pensée pour être utilisée
+                        directement depuis votre téléphone.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             INFORMATIONS
+        ========================== -->
+
+        <section class="info-section">
+
+            <div class="info-card">
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Application
+                    </span>
+
+                    <span class="info-value">
+                        BenSpeed
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Fichier
+                    </span>
+
+                    <span class="info-value">
+                        benspeed.apk
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Plateforme
+                    </span>
+
+                    <span class="info-value">
+                        Android
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Format
+                    </span>
+
+                    <span class="info-value">
+                        APK
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             INSTALLATION
+        ========================== -->
+
+        <section class="install">
+
+            <div class="install-card">
+
+                <h2>
+                    📲 Comment installer BenSpeed ?
+                </h2>
+
+                <ol>
+
+                    <li>
+                        Ouvrez cette page depuis votre téléphone Android.
+                    </li>
+
+                    <li>
+                        Appuyez sur
+                        <strong>« Télécharger BenSpeed »</strong>.
+                    </li>
+
+                    <li>
+                        Attendez la fin du téléchargement.
+                    </li>
+
+                    <li>
+                        Ouvrez le fichier
+                        <strong>benspeed.apk</strong>.
+                    </li>
+
+                    <li>
+                        Autorisez l'installation si Android vous le demande.
+                    </li>
+
+                    <li>
+                        Lancez BenSpeed.
+                    </li>
+
+                </ol>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <p>
+            <strong>BenSpeed</strong> — Application Android
+        </p>
+
+        <p style="margin-top:10px;">
+            Abdallah Ben Ayed — Institut Bassora
+        </p>
+
+        <p style="margin-top:6px;">
+            Créé avec l'aide de ChatGPT
+        </p>
+
+    </footer>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        /*
+         * Vérification simple du téléchargement.
+         */
+
+        const downloadButton =
+            document.querySelector(".download-button");
+
+        downloadButton.addEventListener("click", function () {
+
+            console.log(
+                "Téléchargement de benspeed.apk"
+            );
+
+        });
+
+    </script>
+
+</body>
+</html>
